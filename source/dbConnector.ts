@@ -1,11 +1,12 @@
 import fastifyPlugin from "fastify-plugin";
 import fastifyMongo from "@fastify/mongodb";
 import { FastifyInstance } from "fastify";
+import { env } from "./env";
 
 
 async function dbConnectorInstance(fastify: FastifyInstance) {
   fastify.register(fastifyMongo, {
-    url: process.env.MONGODB_DATABASE_URL,
+    url: env.MONGODB_DATABASE_URL,
   });
 }
 
