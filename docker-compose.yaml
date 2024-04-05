@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:5.0
+    restart: always
+    container_name: mongodb
+    build: ./mongodb_rs
+    environment:
+      MONGO_DB: test
+      MONGO_INITDB_ROOT_USERNAME: prisma
+      MONGO_INITDB_ROOT_PASSWORD: prisma
+      MONGO_REPLICA_HOST: localhost
+      MONGO_REPLICA_PORT: 27017
+    ports:
+      - 27023:27017
+    volumes:
+      - crud_mongodb_data:/var/lib/mongo
+ 
+  redis:
+    image: bitnami/redis:latest
+    container_name: redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - 'crud_redis_data:/bitnami/redis/data'
+
+volumes:
+  crud_mongodb_data:
+  crud_redis_data:
