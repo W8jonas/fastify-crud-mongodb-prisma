@@ -1,21 +1,21 @@
-version: '3.8'
+version: '3.7'
 
 services:
   mongodb:
-    image: mongo:5.0
+    image: zcube/bitnami-compat-mongodb
     restart: always
     container_name: mongodb
-    build: ./mongodb_rs
+    build: ./mongodb_replica
     environment:
-      MONGO_DB: test
-      MONGO_INITDB_ROOT_USERNAME: prisma
-      MONGO_INITDB_ROOT_PASSWORD: prisma
-      MONGO_REPLICA_HOST: localhost
-      MONGO_REPLICA_PORT: 27017
+      - MONGODB_ADVERTISED_HOSTNAME=127.0.0.1
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ROOT_USER=anyuser
+      - MONGODB_ROOT_PASSWORD=anypassword
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
     ports:
-      - 27023:27017
+      - 27017:27017
     volumes:
-      - crud_mongodb_data:/var/lib/mongo
+      - crud_mongodb_data:/bitnami/mongodb
  
   redis:
     image: bitnami/redis:latest
