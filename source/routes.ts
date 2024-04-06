@@ -24,8 +24,16 @@ async function routes(fastify: FastifyInstance) {
     
     const {animal} = request.body as any
 
-    const result = await collection.insertOne({ animal: animal  || '' });
-    return result;
+    try {
+      const result = await prisma.animals.create({
+        data: {
+          animal: animal
+        }
+      })
+      return result;
+    } catch (error) {
+      console.error('error =======>>> ', error)      
+    }
   });
 
 
