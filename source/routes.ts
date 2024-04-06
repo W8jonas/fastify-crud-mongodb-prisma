@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 
 async function routes(fastify: FastifyInstance) {
-  const collection = fastify?.mongo?.db?.collection("animals");
+  const collection = fastify?.mongo?.db?.collection("Animals");
 
   if (!collection) return 
 
@@ -34,7 +34,7 @@ async function routes(fastify: FastifyInstance) {
     return result;
   });
 
-  
+
   fastify.get("/animals/:animal", async (request, reply) => {
 
     const {animal} = request.body as any
