@@ -29,8 +29,22 @@ async function routes(fastify: FastifyInstance) {
   fastify.get("/animals", async (request, reply) => {
     const result = await collection.find().toArray();
     if (result.length === 0) {
-      throw new Error("No documents found");
+      throw new Error("No animals found");
     }
+    return result;
+  });
+
+  
+  fastify.get("/animals/:animal", async (request, reply) => {
+
+    const {animal} = request.body as any
+ 
+    const result = await collection.findOne({ animal: animal });
+
+    if (!result) {
+      throw new Error("No animal found");
+    }
+
     return result;
   });
 
