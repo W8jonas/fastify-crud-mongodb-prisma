@@ -25,6 +25,15 @@ async function routes(fastify: FastifyInstance) {
     return result;
   });
 
+
+  fastify.get("/animals", async (request, reply) => {
+    const result = await collection.find().toArray();
+    if (result.length === 0) {
+      throw new Error("No documents found");
+    }
+    return result;
+  });
+
 }
 
 export default routes;
