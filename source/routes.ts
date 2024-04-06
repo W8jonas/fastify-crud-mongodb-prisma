@@ -40,11 +40,19 @@ async function routes(fastify: FastifyInstance) {
   });
 
 
-  fastify.get("/animals/:animal", async (request, reply) => {
+  fastify.get("/animals/:animalId", async (request, reply) => {
 
-    const {animal} = request.body as any
+    const {animalId}= request.params as any
  
-    const result = await collection.findOne({ animal: animal });
+    if (!animalId) {
+      throw new Error("No animalId");
+    }
+
+    const result = await prisma.animals.findUnique({
+      where: {
+        id: animalId
+      }
+    })
 
     if (!result) {
       throw new Error("No animal found");
