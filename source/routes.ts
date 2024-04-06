@@ -1,6 +1,9 @@
 import { FastifyInstance } from "fastify";
+import { PrismaClient } from '@prisma/client'
 
 async function routes(fastify: FastifyInstance) {
+  const prisma = new PrismaClient()
+
   const collection = fastify?.mongo?.db?.collection("Animals");
 
   if (!collection) return 
@@ -27,7 +30,9 @@ async function routes(fastify: FastifyInstance) {
 
 
   fastify.get("/animals", async (request, reply) => {
-    const result = await collection.find().toArray();
+
+    const result = await prisma.animals.findMany()
+
     if (result.length === 0) {
       throw new Error("No animals found");
     }
