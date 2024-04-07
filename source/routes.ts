@@ -8,19 +8,7 @@ async function routes(fastify: FastifyInstance) {
 
   if (!collection) return;
 
-  const animalBodyJsonSchema = {
-    type: "object",
-    required: ["animal"],
-    properties: {
-      animal: { type: "string" },
-    },
-  };
-
-  const schema = {
-    body: animalBodyJsonSchema,
-  };
-
-  fastify.post("/animals", { schema }, async (request, reply) => {
+  fastify.post("/animals", async (request, reply) => {
     const { animal } = request.body as any;
 
     const result = await prisma.animals.create({
