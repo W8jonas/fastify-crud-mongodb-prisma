@@ -4,10 +4,6 @@ import { PrismaClient } from "@prisma/client";
 async function routes(fastify: FastifyInstance) {
   const prisma = new PrismaClient();
 
-  const collection = fastify?.mongo?.db?.collection("Animals");
-
-  if (!collection) return;
-
   fastify.post("/animals", async (request, reply) => {
     const { animal } = request.body as any;
 
