@@ -1,9 +1,13 @@
 import { FastifyInstance } from "fastify";
 import { PrismaClient } from "@prisma/client";
 import { z } from 'zod'
+import redis from 'ioredis';
+
 
 async function routes(fastify: FastifyInstance) {
   const prisma = new PrismaClient();
+  const redisClient = redis.createClient();
+
 
   fastify.post("/user", async (request, reply) => {
 
@@ -20,7 +24,9 @@ async function routes(fastify: FastifyInstance) {
       },
     });
     
-    return reply.status(201).send(result);
+    const redisResponse = await redisClient.incr('total_users')
+    
+    return reply.status(201).send({newUser: result, totalUsers: redisResponse});
   });
 
 
