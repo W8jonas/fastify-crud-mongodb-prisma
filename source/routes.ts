@@ -23,6 +23,7 @@ async function routes(fastify: FastifyInstance) {
     return reply.status(201).send(result);
   });
 
+
   fastify.put("/user/:userId", async (request, reply) => {
 
     const userSchema = z.object({
@@ -47,6 +48,7 @@ async function routes(fastify: FastifyInstance) {
     
     return reply.status(201).send(result);
   });
+
 
   fastify.patch("/user/:userId", async (request, reply) => {
 
@@ -73,6 +75,22 @@ async function routes(fastify: FastifyInstance) {
     return reply.status(201).send(result);
   });
 
+
+  fastify.delete("/user/:userId", async (request, reply) => {
+
+    const userIdSchema = z.object({
+      userId: z.string()
+    })
+    const { userId } = userIdSchema.parse(request.params)
+    
+    const result = await prisma.user.delete({
+      where: {
+        id: userId
+      }
+    });
+    
+    return reply.status(200).send(result);
+  });
 
   fastify.get("/user", async (request, reply) => {
     const result = await prisma.user.findMany();
