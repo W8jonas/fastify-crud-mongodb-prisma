@@ -48,6 +48,31 @@ async function routes(fastify: FastifyInstance) {
     return reply.status(201).send(result);
   });
 
+  fastify.patch("/user/:userId", async (request, reply) => {
+
+    const userSchema = z.object({
+      name: z.string().optional(),
+      email: z.string().email().optional()
+    })
+    const { name, email } = userSchema.parse(request.body)
+
+    const userIdSchema = z.object({
+      userId: z.string()
+    })
+    const { userId } = userIdSchema.parse(request.params)
+    
+    const result = await prisma.user.update({
+      data: {
+        name, email,
+      },
+      where: {
+        id: userId
+      }
+    });
+    
+    return reply.status(201).send(result);
+  });
+
 
   fastify.get("/user", async (request, reply) => {
     const result = await prisma.user.findMany();
