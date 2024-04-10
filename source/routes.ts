@@ -89,13 +89,15 @@ async function routes(fastify: FastifyInstance) {
     })
     const { userId } = userIdSchema.parse(request.params)
     
-    const result = await prisma.user.delete({
+    await prisma.user.delete({
       where: {
         id: userId
       }
     });
     
-    return reply.status(200).send(result);
+    const redisResponse = await redisClient.decr('total_users')
+    
+    return reply.status(200).send({message: 'User deleted successfully', totalUsers: redisResponse});
   });
 
   fastify.get("/user", async (request, reply) => {
