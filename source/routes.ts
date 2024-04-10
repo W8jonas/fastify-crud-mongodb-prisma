@@ -23,6 +23,7 @@ async function routes(fastify: FastifyInstance) {
     return reply.status(201).send(result);
   });
 
+
   fastify.get("/user", async (request, reply) => {
     const result = await prisma.user.findMany();
 
@@ -32,8 +33,14 @@ async function routes(fastify: FastifyInstance) {
     return result;
   });
 
+  
   fastify.get("/user/:userId", async (request, reply) => {
-    const { userId } = request.params as any;
+    
+    const userIdSchema = z.object({
+      userId: z.string()
+    })
+
+    const { userId } = userIdSchema.parse(request.params)
 
     if (!userId) {
       throw new Error("No userId");
