@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 async function routes(fastify: FastifyInstance) {
   const prisma = new PrismaClient();
 
-  fastify.post("/users", async (request, reply) => {
+  fastify.post("/user", async (request, reply) => {
     const { name, email } = request.body as any;
 
     const result = await prisma.user.create({
@@ -16,11 +16,11 @@ async function routes(fastify: FastifyInstance) {
     return result;
   });
 
-  fastify.get("/animals", async (request, reply) => {
-    const result = await prisma.animals.findMany();
+  fastify.get("/user", async (request, reply) => {
+    const result = await prisma.user.findMany();
 
     if (result.length === 0) {
-      throw new Error("No animals found");
+      throw new Error("No users found");
     }
     return result;
   });
