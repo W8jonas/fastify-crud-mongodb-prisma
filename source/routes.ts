@@ -4,14 +4,15 @@ import { PrismaClient } from "@prisma/client";
 async function routes(fastify: FastifyInstance) {
   const prisma = new PrismaClient();
 
-  fastify.post("/animals", async (request, reply) => {
-    const { animal } = request.body as any;
+  fastify.post("/users", async (request, reply) => {
+    const { name, email } = request.body as any;
 
-    const result = await prisma.animals.create({
+    const result = await prisma.user.create({
       data: {
-        animal: animal,
+        name, email,
       },
     });
+    
     return result;
   });
 
