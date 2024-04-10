@@ -1,11 +1,18 @@
 import { FastifyInstance } from "fastify";
 import { PrismaClient } from "@prisma/client";
+import { z } from 'zod'
 
 async function routes(fastify: FastifyInstance) {
   const prisma = new PrismaClient();
 
   fastify.post("/user", async (request, reply) => {
-    const { name, email } = request.body as any;
+
+    const userSchema = z.object({
+      name: z.string(),
+      email: z.string().email()
+    })
+
+    const { name, email } = userSchema.parse(request.body)
 
     const result = await prisma.user.create({
       data: {
@@ -13,7 +20,7 @@ async function routes(fastify: FastifyInstance) {
       },
     });
     
-    return result;
+    return reply.status(201).send(result);
   });
 
   fastify.get("/user", async (request, reply) => {
@@ -25,21 +32,21 @@ async function routes(fastify: FastifyInstance) {
     return result;
   });
 
-  fastify.get("/animals/:animalId", async (request, reply) => {
-    const { animalId } = request.params as any;
+  fastify.get("/user/:userId", async (request, reply) => {
+    const { userId } = request.params as any;
 
-    if (!animalId) {
-      throw new Error("No animalId");
+    if (!userId) {
+      throw new Error("No userId");
     }
 
-    const result = await prisma.animals.findUnique({
+    const result = await prisma.user.findUnique({
       where: {
-        id: animalId,
+        id: userId,
       },
     });
 
     if (!result) {
-      throw new Error("No animal found");
+      throw new Error("No user found");
     }
 
     return result;
