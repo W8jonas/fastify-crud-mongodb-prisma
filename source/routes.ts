@@ -100,13 +100,17 @@ async function routes(fastify: FastifyInstance) {
     return reply.status(200).send({message: 'User deleted successfully', totalUsers: redisResponse});
   });
 
+
   fastify.get("/user", async (request, reply) => {
     const result = await prisma.user.findMany();
 
     if (result.length === 0) {
       throw new Error("No users found");
     }
-    return result;
+
+    const redisResponse = await redisClient.get('total_users')
+    
+    return reply.status(201).send({users: result, totalUsers: redisResponse});
   });
 
   
@@ -132,7 +136,9 @@ async function routes(fastify: FastifyInstance) {
       throw new Error("No user found");
     }
 
-    return result;
+    const redisResponse = await redisClient.get('total_users')
+    
+    return reply.status(201).send({user: result, totalUsers: redisResponse});
   });
 }
 
