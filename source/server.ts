@@ -1,13 +1,5 @@
 import 'dotenv/config'
-
-import fastify from "fastify";
-import routes from "./routes";
-
-const app = fastify({
-  logger: true,
-});
-
-app.register(routes);
+import { app } from './app';
 
 app.listen({ port: 3333 }).then(() => {
   console.log("listening on port 3333");
