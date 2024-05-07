@@ -1,8 +1,29 @@
-import {sum} from './index'
+import { FastifyInstance } from 'fastify';
+import { fastifyInstance } from '../source/app'; // Supondo que você tenha uma função que constrói sua instância Fastify
 
-describe('Teste inicial', () => {
+let fastify: FastifyInstance;
 
-    test('soma dois números pares', () => {
-        expect(sum(5, 5)).toBe(10);
+beforeAll(async () => {
+  fastify = fastifyInstance
+  await fastify.ready();
+});
+
+afterAll(async () => {
+  await fastify.close();
+});
+
+describe('Testes de integração para as rotas de usuário', () => {
+  test('GET /user - deve retornar uma lista de usuários', async () => {
+    const response = await fastify.inject({
+      method: 'GET',
+      url: '/user',
     })
-})
+
+    const responseParsed = response.json()
+    console.log('responseParsed', responseParsed)
+
+    expect(response.statusCode).toBe(201);
+    expect(responseParsed?.users).toBeInstanceOf(Array);
+    expect(responseParsed?.totalUsers).toEqual('1');
+  });
+});
