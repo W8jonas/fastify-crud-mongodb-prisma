@@ -1,5 +1,7 @@
 import 'dotenv/config'
-import { fastifyInstance } from './app';
+import { createFastifyInstance } from './app';
+
+const fastifyInstance = createFastifyInstance()
 
 fastifyInstance.listen({ port: 3333 }, (err, address) => {
   console.log("listening on port ", address);

@@ -1,10 +1,8 @@
-import { FastifyInstance } from 'fastify';
-import { fastifyInstance } from '../source/app'; // Supondo que você tenha uma função que constrói sua instância Fastify
+import { createFastifyInstance } from '../source/app'; // Supondo que você tenha uma função que constrói sua instância Fastify
 
-let fastify: FastifyInstance;
+const fastify = createFastifyInstance()
 
 beforeAll(async () => {
-  fastify = fastifyInstance
   await fastify.ready();
 });
 
