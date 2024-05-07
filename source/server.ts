@@ -1,6 +1,10 @@
 import 'dotenv/config'
-import { app } from './app';
+import { fastifyInstance } from './app';
 
-app.listen({ port: 3333 }).then(() => {
-  console.log("listening on port 3333");
-});
+fastifyInstance.listen({ port: 3333 }, (err, address) => {
+  console.log("listening on port ", address);
+  if (err) {
+    console.error('Error on server:', err);
+    process.exit(1);
+  }
+})
