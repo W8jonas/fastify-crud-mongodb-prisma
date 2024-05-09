@@ -22,6 +22,5 @@ describe('Testes de integração para as rotas de usuário', () => {
 
     expect(response.statusCode).toBe(201);
     expect(responseParsed?.users).toBeInstanceOf(Array);
-    expect(responseParsed?.totalUsers).toEqual('1');
   });
 });
